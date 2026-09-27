@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Infinit Photography | Immersive Portfolio & Album Studio</title>
+  <title>Infinit Photography | Immersive Portfolio</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
   
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -21,10 +21,9 @@
           },
           colors: {
             brand: {
-              dark: '#111827',
+              dark: '#0f172a',
               gold: '#d97706',
-              light: '#f9fafb',
-              leather: '#181b22'
+              light: '#f8fafc',
             }
           }
         }
@@ -33,69 +32,76 @@
   </script>
 
   <style>
+    /* Global Resets & Body */
     html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
       height: 100dvh;
       overflow: hidden;
-      background-color: #0b0f19;
+      background-color: #050810; /* Darker backdrop behind the book */
       -webkit-tap-highlight-color: transparent;
       font-family: 'Inter', sans-serif;
     }
 
-    #scene {
+    /* 3D Scene Setup */
+    #book-scene {
       width: 100vw;
       height: 100dvh;
-      perspective: 2200px;
+      perspective: 2500px;
       position: relative;
     }
 
+    /* Page Setup */
     .page {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100dvh;
       background: #ffffff;
       transform-origin: left center;
-      transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 1s ease;
+      transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 1.2s ease;
       transform-style: preserve-3d;
       backface-visibility: hidden;
       overflow-y: auto;
       overflow-x: hidden;
-      box-shadow: inset 18px 0 35px rgba(0,0,0,0.05);
+      /* Subtle inner shadow for page depth */
+      box-shadow: inset 20px 0 40px rgba(0,0,0,0.06); 
     }
 
     .page.flipped {
       transform: rotateY(-180deg);
-      box-shadow: inset -18px 0 35px rgba(0,0,0,0.15);
+      box-shadow: inset -20px 0 40px rgba(0,0,0,0.15);
     }
 
-    /* Custom Scrollbars */
-    .page::-webkit-scrollbar { width: 6px; }
+    /* Custom Scrollbars for Page Content */
+    .page::-webkit-scrollbar { width: 5px; }
     .page::-webkit-scrollbar-track { background: transparent; }
     .page::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
+    /* Rexine Leatherette Cover Texture */
     .rexine-cover {
       background-color: #12151c;
       background-image: 
         radial-gradient(rgba(255,255,255,0.03) 15%, transparent 16%),
-        radial-gradient(rgba(0,0,0,0.5) 15%, transparent 16%);
-      background-size: 12px 12px;
-      box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        radial-gradient(rgba(0,0,0,0.4) 15%, transparent 16%);
+      background-size: 14px 14px;
+      background-position: 0 0, 7px 7px;
+      box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
     }
 
+    /* Gold Foil Typography Effect */
     .gold-foil {
       background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.7));
     }
 
     .gold-border {
       border: 1px solid rgba(217, 119, 6, 0.4);
-      box-shadow: 0 0 20px rgba(217, 119, 6, 0.15);
+      box-shadow: 0 0 25px rgba(217, 119, 6, 0.2);
     }
 
     /* Floating Navigation Controls */
@@ -110,128 +116,119 @@
       z-index: 1000;
       pointer-events: none;
     }
-
+    
     .nav-btn {
       pointer-events: auto;
-      background: rgba(17, 24, 39, 0.9);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
       color: white;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 30px;
       font-weight: 500;
       font-size: 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       transition: all 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    .nav-btn:hover { background: #000; transform: translateY(-2px); }
-    .nav-btn.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
+    
+    .nav-btn:hover { background: #000; transform: translateY(-3px); }
+    .nav-btn.hidden { opacity: 0; pointer-events: none; transform: translateY(15px); }
 
-    /* Masonry & Gallery Styles */
+    /* Masonry Gallery Styles */
     .masonry-grid {
       column-count: 2;
       column-gap: 12px;
     }
     @media (min-width: 768px) { .masonry-grid { column-count: 3; column-gap: 16px; } }
-    @media (min-width: 1024px) { .masonry-grid { column-count: 3; column-gap: 20px; } }
+    @media (min-width: 1024px) { .masonry-grid { column-count: 4; column-gap: 20px; } }
     
     .gallery-tile {
       break-inside: avoid;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       border-radius: 12px;
       overflow: hidden;
       position: relative;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
-    .gallery-tile:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-    }
+    @media (min-width: 768px) { .gallery-tile { margin-bottom: 16px; } }
+
     .gallery-tile img {
       width: 100%;
-      height: auto;
       display: block;
-      transition: transform 0.5s ease;
+      transition: transform 0.6s ease;
     }
-    .gallery-tile:hover img {
-      transform: scale(1.05);
-    }
-
-    .content-wrapper { max-width: 1000px; margin: 0 auto; }
+    .gallery-tile:hover img { transform: scale(1.06); }
+    
+    .content-wrapper { max-width: 1100px; margin: 0 auto; }
   </style>
 </head>
 <body>
 
-  <div id="scene">
+  <div id="book-scene">
 
     <!-- PAGE 1: COVER PAGE -->
-    <div class="page rexine-cover" id="page-1">
-      <div class="w-full min-h-[100dvh] flex flex-col items-center justify-center text-center p-6 relative">
-        <div class="absolute inset-4 md:inset-8 border border-amber-500/20 pointer-events-none rounded-xl flex items-center justify-center">
-          <div class="absolute inset-2 border border-amber-500/10 rounded-lg"></div>
-        </div>
+    <div class="page rexine-cover flex flex-col items-center justify-center relative p-6" id="page-1">
+      <div class="absolute inset-4 md:inset-8 border border-amber-600/30 rounded-xl pointer-events-none">
+        <div class="absolute inset-2 border border-amber-600/10 rounded-lg"></div>
+      </div>
 
-        <div class="relative z-10 max-w-2xl px-4">
-          <div class="w-20 h-20 md:w-24 md:h-24 mx-auto mb-8 rounded-full gold-border bg-black/40 flex items-center justify-center shadow-2xl">
-            <i class="fa-solid fa-camera-retro text-3xl md:text-4xl gold-foil"></i>
-          </div>
-          
-          <h5 class="text-amber-500/80 uppercase tracking-[0.3em] text-xs md:text-sm font-semibold mb-3">
-            Infinit Photography
-          </h5>
-          
-          <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold leading-tight mb-6 gold-foil">
-            Moments Captured.<br>Memories Crafted.
-          </h1>
-          
-          <p class="font-sans text-gray-300 text-sm md:text-lg tracking-widest uppercase mb-10 font-light">
-            by Ranath Subasinghe
-          </p>
-
-          <button onclick="flipNext()" class="group relative px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 text-black font-semibold rounded-full shadow-2xl hover:scale-105 transition-all duration-300">
-            <span class="flex items-center gap-3">
-              Open Photobook <i class="fa-solid fa-book-open group-hover:rotate-12 transition-transform"></i>
-            </span>
-          </button>
+      <div class="relative z-10 max-w-3xl px-4 text-center">
+        <div class="w-24 h-24 md:w-28 md:h-28 mx-auto mb-10 rounded-full gold-border bg-black/60 flex items-center justify-center shadow-2xl backdrop-blur-sm">
+          <i class="fa-solid fa-camera-retro text-4xl md:text-5xl gold-foil"></i>
         </div>
+        
+        <h5 class="text-amber-500/80 uppercase tracking-[0.4em] text-xs md:text-sm font-semibold mb-4">
+          Infinit Photography
+        </h5>
+        
+        <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl font-bold leading-tight mb-8 gold-foil pb-2">
+          Moment Captured.<br>Memories Crafted.
+        </h1>
+        
+        <p class="font-sans text-gray-400 text-sm md:text-xl tracking-widest uppercase mb-12 font-light">
+          by Ranath Subasinghe
+        </p>
+
+        <button onclick="flipNext()" class="px-8 py-4 bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700 text-black font-bold rounded-full shadow-[0_0_30px_rgba(217,119,6,0.4)] hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto">
+          Open Portfolio <i class="fa-solid fa-book-open"></i>
+        </button>
       </div>
     </div>
 
-    <!-- PAGE 2: DIGITAL STORYTELLING GALLERY PAGE -->
+    <!-- PAGE 2: DIGITAL STORYTELLING PAGE -->
     <div class="page bg-brand-light" id="page-2">
-      <div class="p-6 md:p-12 pb-32 min-h-[100dvh] content-wrapper">
-        <header class="mb-8 text-center mt-6">
-          <span class="text-brand-gold uppercase tracking-widest text-xs font-semibold mb-2 block">Portfolio & Showcase</span>
-          <h2 class="font-serif text-3xl md:text-5xl text-brand-dark mb-3">Digital Storytelling</h2>
-          <p class="text-gray-500 text-sm md:text-base">Explore captured moments across various genres.</p>
+      <div class="p-5 md:p-12 pb-32 min-h-full content-wrapper">
+        <header class="text-center pt-8 mb-8">
+          <span class="text-brand-gold uppercase tracking-widest text-xs font-bold mb-2 block">Portfolio Showcase</span>
+          <h2 class="font-serif text-3xl md:text-5xl text-brand-dark mb-4">Digital Storytelling</h2>
+          <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">Browse through our diverse collections. Every frame holds a timeless emotion.</p>
         </header>
 
-        <!-- Special Rate Banner for Photoshoot + Album -->
-        <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 border-l-4 border-brand-gold p-4 rounded-r-xl mb-8 flex items-center gap-4 shadow-sm">
-          <div class="text-brand-gold text-2xl"><i class="fa-solid fa-gift"></i></div>
+        <!-- Special Rate Banner -->
+        <div class="bg-gradient-to-r from-amber-50 via-white to-amber-50 border border-amber-200 p-5 rounded-2xl mb-8 flex items-center gap-5 shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-tags text-amber-600 text-xl"></i>
+          </div>
           <div>
-            <h4 class="font-semibold text-brand-dark text-sm md:text-base">Special Package Rate Available!</h4>
-            <p class="text-xs md:text-sm text-gray-600">Book any Photoshoot together with a Handcrafted Album to unlock exclusive bundled discount rates.</p>
+            <h4 class="font-bold text-gray-900 text-sm md:text-base">Ask about our Special Photoshoot + Album Package Rates!</h4>
+            <p class="text-xs md:text-sm text-gray-600 mt-1">Combine your session with a handcrafted album for exclusive bundled discounts.</p>
           </div>
         </div>
 
-        <!-- Category Tabs -->
+        <!-- Filter Tabs -->
         <div class="flex flex-wrap justify-center gap-2 mb-8" id="gallery-tabs">
-          <button onclick="filterGallery('all')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-brand-dark text-white shadow-sm transition-all">All</button>
-          <button onclick="filterGallery('baby')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Baby</button>
-          <button onclick="filterGallery('engagement')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Engagement</button>
-          <button onclick="filterGallery('casual')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Casual</button>
-          <button onclick="filterGallery('birthday')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Birthday</button>
-          <button onclick="filterGallery('product')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Product</button>
-          <button onclick="filterGallery('event')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-medium bg-white text-gray-700 hover:bg-gray-100 shadow-sm transition-all">Event</button>
+          <button onclick="filterGallery('all')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-brand-dark text-white shadow-md transition-all">All</button>
+          <button onclick="filterGallery('baby')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Baby</button>
+          <button onclick="filterGallery('engagement')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Engagement</button>
+          <button onclick="filterGallery('casual')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Casual</button>
+          <button onclick="filterGallery('graduation')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Graduation</button>
         </div>
 
-        <!-- Masonry Grid Container -->
+        <!-- Masonry Grid -->
         <div class="masonry-grid" id="gallery-container">
           <!-- Populated dynamically via JS -->
         </div>
@@ -240,132 +237,123 @@
 
     <!-- PAGE 3: HANDCRAFTED ALBUMS STUDIO PAGE -->
     <div class="page bg-white" id="page-3">
-      <div class="p-6 md:p-12 pb-32 min-h-[100dvh] content-wrapper">
-        <header class="mb-8 text-center mt-6">
-          <span class="text-brand-gold uppercase tracking-widest text-xs font-semibold mb-2 block">The Physical Craft</span>
-          <h2 class="font-serif text-3xl md:text-5xl text-brand-dark mb-3">Handcrafted Album Studio</h2>
-          <p class="text-gray-600 text-sm md:text-base max-w-xl mx-auto">Explore our Premium Hardcover & Budget collections with size specifications, lamination choices, and doorstep delivery.</p>
+      <div class="p-5 md:p-12 pb-32 min-h-full content-wrapper">
+        <header class="text-center pt-8 mb-8">
+          <span class="text-brand-gold uppercase tracking-widest text-xs font-bold mb-2 block">The Physical Craft</span>
+          <h2 class="font-serif text-3xl md:text-5xl text-brand-dark mb-4">Handcrafted Album Studio</h2>
+          <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">Turning digital pixels into tangible heirloom books. Explore our collections below.</p>
         </header>
 
         <!-- Category Toggle Switch -->
-        <div class="flex justify-center mb-6">
-          <div class="bg-gray-100 p-1.5 rounded-2xl flex gap-2 shadow-inner">
-            <button onclick="switchAlbumType('premium')" id="tab-premium" class="px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all bg-brand-dark text-white shadow-md">
-              <i class="fa-solid fa-gem mr-2 text-brand-gold"></i> Premium Hardcover
+        <div class="flex justify-center mb-8">
+          <div class="bg-gray-100 p-1.5 rounded-2xl flex gap-1 shadow-inner max-w-full overflow-x-auto">
+            <button onclick="switchAlbumCategory('premium')" id="tab-premium" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0">
+              <i class="fa-solid fa-gem text-amber-400 mr-2"></i> Premium Hardcover
             </button>
-            <button onclick="switchAlbumType('budget')" id="tab-budget" class="px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all text-gray-600 hover:text-black">
+            <button onclick="switchAlbumCategory('budget')" id="tab-budget" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0">
               <i class="fa-solid fa-book-open mr-2"></i> Budget Collection
             </button>
           </div>
         </div>
 
-        <!-- Doorstep Delivery Notice -->
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 text-center">
-          <p class="text-xs md:text-sm font-medium text-amber-900 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-truck-fast text-brand-gold"></i> All online orders are available with secure doorstep delivery across Sri Lanka!
-          </p>
-        </div>
-
-        <!-- Dynamic Album Panel Content -->
-        <div id="album-panel-content">
-          <!-- Rendered dynamically by switchAlbumType() -->
+        <div id="album-container">
+          <!-- Rendered dynamically by switchAlbumCategory() -->
         </div>
       </div>
     </div>
 
-    <!-- PAGE 4: LET'S CREATE TOGETHER (vCard Contact Page) -->
-    <div class="page bg-gray-900 text-white" id="page-4">
-      <div class="p-6 md:p-12 pb-32 min-h-[100dvh] flex flex-col items-center content-wrapper relative">
-        <div class="w-full max-w-md bg-white text-gray-900 rounded-3xl shadow-2xl overflow-hidden mt-6 relative">
+    <!-- PAGE 4: LET'S CREATE TOGETHER (vCard) -->
+    <div class="page bg-gray-900" id="page-4">
+      <div class="p-5 md:p-12 pb-32 min-h-full flex flex-col items-center justify-center content-wrapper relative">
+        
+        <div class="w-full max-w-sm bg-white text-gray-900 rounded-[2rem] shadow-2xl overflow-hidden relative">
           
-          <!-- vCard Header Gradient -->
-          <div class="bg-gradient-to-b from-gray-900 to-gray-800 p-8 text-center text-white relative">
-            <div class="w-28 h-28 mx-auto mb-4 rounded-full p-1 bg-white/25 backdrop-blur-md shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400" alt="Ranath Subasinghe" class="w-full h-full rounded-full object-cover">
+          <!-- Gradient Header -->
+          <div class="bg-gradient-to-b from-gray-800 to-gray-900 pt-10 pb-6 px-6 text-center relative">
+            <div class="w-32 h-32 mx-auto mb-5 rounded-full p-1 bg-white/20 backdrop-blur shadow-2xl border-2 border-amber-500/50">
+              <!-- Using an abstract photographer placeholder since real URL isn't available -->
+              <img src="https://images.unsplash.com/photo-1554046920-90dcac824ab8?w=400&q=80" alt="Ranath Subasinghe" class="w-full h-full rounded-full object-cover">
             </div>
-            <h2 class="font-serif text-2xl font-bold">Ranath Subasinghe</h2>
-            <p class="text-amber-400 text-sm font-medium tracking-wide">Photographer & Album Artisan</p>
-
-            <!-- Quick Action Buttons -->
-            <div class="flex justify-center gap-4 mt-6">
-              <a href="tel:0786945117" class="w-12 h-12 rounded-full bg-white text-gray-900 flex items-center justify-center shadow-lg hover:bg-amber-500 hover:text-white transition-colors">
-                <i class="fa-solid fa-phone text-lg"></i>
-              </a>
-              <a href="https://wa.me/94774903062?text=Hi%20Ranath,%20I%20visited%20your%20portfolio%20website!" target="_blank" class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
-                <i class="fa-brands fa-whatsapp text-xl"></i>
-              </a>
-              <a href="mailto:ranath.subasinghe@gmail.com" class="w-12 h-12 rounded-full bg-white text-gray-900 flex items-center justify-center shadow-lg hover:bg-amber-500 hover:text-white transition-colors">
-                <i class="fa-solid fa-envelope text-lg"></i>
-              </a>
-            </div>
+            <h2 class="font-serif text-2xl font-bold text-white mb-1">Ranath Subasinghe</h2>
+            <p class="text-amber-500 text-sm font-semibold tracking-wide uppercase">Photographer</p>
+            
+            <p class="text-gray-300 text-xs mt-4 leading-relaxed max-w-[250px] mx-auto font-light">
+              Capturing genuine emotion, designing timeless layouts. Dedicated to elevating your memories into an elegant visual story.
+            </p>
           </div>
 
-          <!-- vCard Details Body -->
-          <div class="p-6 space-y-4">
+          <!-- Contact Details List -->
+          <div class="p-6 space-y-3">
             
-            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-phone"></i>
+            <!-- Mobile -->
+            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 shadow-sm">
+                <i class="fa-solid fa-phone text-sm"></i>
               </div>
-              <div>
-                <span class="block text-xs text-gray-400 font-medium uppercase tracking-wider">Mobile</span>
-                <a href="tel:0786945117" class="font-semibold text-gray-800 text-sm hover:text-amber-600">0786945117</a>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                <i class="fa-brands fa-whatsapp"></i>
-              </div>
-              <div>
-                <span class="block text-xs text-gray-400 font-medium uppercase tracking-wider">Whatsapp</span>
-                <a href="https://wa.me/94774903062" target="_blank" class="font-semibold text-gray-800 text-sm hover:text-green-600">0774903062</a>
+              <div class="flex-1">
+                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Mobile</span>
+                <a href="tel:0786945117" class="font-bold text-gray-800 text-sm">0786945117</a>
               </div>
             </div>
 
-            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-envelope"></i>
+            <!-- WhatsApp -->
+            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+              <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 shadow-sm">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
               </div>
-              <div>
-                <span class="block text-xs text-gray-400 font-medium uppercase tracking-wider">Email</span>
-                <a href="mailto:ranath.subasinghe@gmail.com" class="font-semibold text-gray-800 text-xs md:text-sm hover:text-blue-600">ranath.subasinghe@gmail.com</a>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-briefcase"></i>
-              </div>
-              <div>
-                <span class="block text-xs text-gray-400 font-medium uppercase tracking-wider">Studio</span>
-                <span class="font-semibold text-gray-800 text-sm">infinit Photography & Album Crafts</span>
+              <div class="flex-1">
+                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Whatsapp</span>
+                <a href="https://wa.me/94774903062" target="_blank" class="font-bold text-gray-800 text-sm">0774903062</a>
               </div>
             </div>
 
-            <!-- Social Links & Add Contact -->
-            <div class="pt-4 border-t border-gray-100">
-              <div class="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl">
-                <div class="flex items-center gap-3">
-                  <i class="fa-brands fa-facebook text-blue-600 text-xl"></i>
-                  <span class="font-medium text-sm text-gray-700">Facebook</span>
+            <!-- Email -->
+            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+              <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 shadow-sm">
+                <i class="fa-solid fa-envelope text-sm"></i>
+              </div>
+              <div class="flex-1">
+                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Email</span>
+                <a href="mailto:ranath.subasinghe@gmail.com" class="font-bold text-gray-800 text-xs sm:text-sm line-clamp-1">ranath.subasinghe@gmail.com</a>
+              </div>
+            </div>
+
+            <!-- Studio -->
+            <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+              <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 shadow-sm">
+                <i class="fa-solid fa-briefcase text-sm"></i>
+              </div>
+              <div class="flex-1">
+                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Studio</span>
+                <span class="font-bold text-gray-800 text-sm">Infinit Photography</span>
+              </div>
+            </div>
+
+            <!-- Social & Action -->
+            <div class="pt-4 border-t border-gray-100 mt-2">
+              <div class="flex items-center justify-between mb-5 px-2">
+                <div class="flex items-center gap-2 text-gray-500 text-sm font-semibold">
+                  Find me on
                 </div>
-                <a href="https://facebook.com" target="_blank" class="text-xs font-semibold px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-800 transition-colors">Follow Me <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                <a href="#" class="flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors">
+                  <i class="fa-brands fa-facebook text-base"></i> Facebook <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
               </div>
 
-              <button onclick="downloadVCard()" class="w-full py-4 rounded-xl bg-gray-900 hover:bg-black text-white font-semibold text-sm transition-all shadow-lg flex items-center justify-center gap-2">
-                <i class="fa-solid fa-user-plus text-amber-400"></i> Add Contact (Save .vcf)
+              <button onclick="downloadVCard()" class="w-full py-4 rounded-xl bg-gray-900 hover:bg-black text-white font-bold text-sm transition-all shadow-[0_8px_20px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2">
+                <i class="fa-solid fa-user-plus text-amber-400"></i> Add Contact
               </button>
             </div>
-
+            
           </div>
         </div>
+
       </div>
     </div>
 
   </div>
 
-  <!-- Floating Navigation -->
+  <!-- Floating Navigation Controls -->
   <div class="nav-controls">
     <button id="btn-prev" onclick="flipPrev()" class="nav-btn hidden">
       <i class="fa-solid fa-chevron-left"></i> Prev
@@ -375,109 +363,121 @@
     </button>
   </div>
 
-  <!-- Global Lightbox Component with Touch Swipe & Arrows -->
-  <div id="lightbox" class="fixed inset-0 bg-black/95 z-[2000] hidden flex-col items-center justify-center p-4">
-    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-3xl hover:text-amber-500 transition-colors z-10 w-12 h-12 flex items-center justify-center bg-white/10 rounded-full">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    <button onclick="prevLightboxImage()" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-amber-500 transition-colors z-10 w-12 h-12 flex items-center justify-center bg-white/10 rounded-full">
-      <i class="fa-solid fa-chevron-left"></i>
-    </button>
-    <button onclick="nextLightboxImage()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-2xl hover:text-amber-500 transition-colors z-10 w-12 h-12 flex items-center justify-center bg-white/10 rounded-full">
-      <i class="fa-solid fa-chevron-right"></i>
-    </button>
-    <div class="max-w-4xl max-h-[80vh] flex items-center justify-center">
-      <img id="lightbox-img" src="" alt="Enlarged Photo" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl">
+  <!-- Global Lightbox Overlay (Hidden by Default) -->
+  <div id="lightbox" class="fixed inset-0 bg-black/98 z-[9999] hidden flex-col items-center justify-center p-4 touch-none">
+    
+    <!-- Top Bar Controls -->
+    <div class="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 to-transparent">
+      <div id="lightbox-counter" class="text-white font-medium tracking-widest text-sm bg-black/50 px-4 py-1.5 rounded-full">1 / 10</div>
+      <button onclick="closeLightbox()" class="text-white hover:text-amber-500 transition-colors w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-md">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
     </div>
-    <div id="lightbox-caption" class="text-gray-400 text-sm mt-4 font-medium uppercase tracking-wider"></div>
+
+    <!-- Directional Arrows -->
+    <button onclick="prevLightboxImage(event)" class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-amber-500 transition-colors z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-black/50 hover:bg-white/10 rounded-full backdrop-blur-sm">
+      <i class="fa-solid fa-chevron-left text-xl md:text-3xl"></i>
+    </button>
+    
+    <button onclick="nextLightboxImage(event)" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-amber-500 transition-colors z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-black/50 hover:bg-white/10 rounded-full backdrop-blur-sm">
+      <i class="fa-solid fa-chevron-right text-xl md:text-3xl"></i>
+    </button>
+
+    <!-- Main Image -->
+    <div class="relative w-full max-w-6xl h-full flex items-center justify-center">
+      <img id="lightbox-img" src="" alt="View" class="max-w-full max-h-[85vh] object-contain rounded-md shadow-2xl transition-opacity duration-300">
+    </div>
+    
+    <!-- Caption -->
+    <div id="lightbox-caption" class="absolute bottom-6 text-gray-300 text-xs md:text-sm font-semibold uppercase tracking-widest bg-black/60 px-6 py-2 rounded-full backdrop-blur-md">
+      Sample Image
+    </div>
   </div>
 
   <script>
+    // --- 1. PAGE FLIPPING LOGIC ---
     const pages = document.querySelectorAll('.page');
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
     const totalPages = pages.length;
-    let currentIndex = 0;
+    let currentPageIndex = 0;
 
-    function initPages() {
+    // Set initial Z-Indexes so first page is on top
+    function initBook() {
       pages.forEach((page, index) => {
         page.style.zIndex = totalPages - index;
       });
+      updateNavButtons();
     }
 
-    function updateNav() {
-      if (currentIndex === 0) {
-        btnPrev.classList.add('hidden');
-      } else {
-        btnPrev.classList.remove('hidden');
-      }
-
-      if (currentIndex === totalPages - 1) {
-        btnNext.classList.add('hidden');
-      } else {
-        btnNext.classList.remove('hidden');
-      }
+    function updateNavButtons() {
+      btnPrev.classList.toggle('hidden', currentPageIndex === 0);
+      btnNext.classList.toggle('hidden', currentPageIndex === totalPages - 1);
     }
 
     function flipNext() {
-      if (currentIndex < totalPages - 1) {
-        pages[currentIndex].classList.add('flipped');
-        pages[currentIndex + 1].scrollTop = 0;
-        currentIndex++;
-        updateNav();
+      if (currentPageIndex < totalPages - 1) {
+        pages[currentPageIndex].classList.add('flipped');
+        // Reset scroll position of next page
+        pages[currentPageIndex + 1].scrollTop = 0; 
+        currentPageIndex++;
+        updateNavButtons();
       }
     }
 
     function flipPrev() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        pages[currentIndex].classList.remove('flipped');
-        updateNav();
+      if (currentPageIndex > 0) {
+        currentPageIndex--;
+        pages[currentPageIndex].classList.remove('flipped');
+        updateNavButtons();
       }
     }
 
+    // Keyboard Navigation for Pages
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-        flipNext();
-      } else if (e.key === 'ArrowLeft') {
-        flipPrev();
-      }
+      // Don't flip pages if lightbox is open
+      if (!document.getElementById('lightbox').classList.contains('hidden')) return;
+      if (e.key === 'ArrowRight') flipNext();
+      if (e.key === 'ArrowLeft') flipPrev();
     });
 
-    const galleryItems = [
-      { url: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=800', category: 'baby', title: 'Newborn Baby Portrait' },
-      { url: 'https://images.unsplash.com/photo-1555252335-908e7d5c8873?q=80&w=800', category: 'baby', title: 'Milestone Baby Shoot' },
-      { url: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800', category: 'engagement', title: 'Sunset Engagement Session' },
-      { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800', category: 'engagement', title: 'Couple Romance' },
-      { url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800', category: 'casual', title: 'Casual Outdoor Portrait' },
-      { url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800', category: 'casual', title: 'Lifestyle Casual Shoot' },
-      { url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800', category: 'birthday', title: '1st Birthday Celebration' },
-      { url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800', category: 'birthday', title: 'Birthday Party Joy' },
-      { url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800', category: 'product', title: 'Commercial Product Photography' },
-      { url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800', category: 'product', title: 'Minimalist Watch Product' },
-      { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800', category: 'event', title: 'Grand Celebration Event' },
-      { url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800', category: 'event', title: 'Wedding Reception' }
+    // --- 2. STORYTELLING GALLERY DATA & LOGIC ---
+    // Generate placeholder items. In production, replace URLs with actual client photos.
+    const storytellingGallery = [
+      { category: 'baby', url: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=800&q=80', title: 'Newborn Portrait' },
+      { category: 'baby', url: 'https://images.unsplash.com/photo-1555252335-908e7d5c8873?w=800&q=80', title: 'Milestone Shoot' },
+      { category: 'engagement', url: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800&q=80', title: 'Golden Hour Couple' },
+      { category: 'engagement', url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80', title: 'Engagement Ring Details' },
+      { category: 'casual', url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80', title: 'Outdoor Casual' },
+      { category: 'casual', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80', title: 'Lifestyle Portrait' },
+      { category: 'graduation', url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80', title: 'University Graduation' },
+      { category: 'graduation', url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80', title: 'Cap and Gown' },
+      { category: 'baby', url: 'https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80', title: 'Toddler Playtime' },
+      { category: 'engagement', url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80', title: 'Pre-Shoot Moments' },
+      { category: 'casual', url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80', title: 'Urban Casual' }
     ];
 
-    let currentFilter = 'all';
-    let filteredItems = [...galleryItems];
-    let lightboxIndex = 0;
-    let activeLightboxImages = [];
+    let currentStoryFilter = 'all';
+    let filteredStoryItems = [];
 
     function renderGallery(filter) {
-      currentFilter = filter;
+      currentStoryFilter = filter;
       const container = document.getElementById('gallery-container');
-      filteredItems = filter === 'all' ? galleryItems : galleryItems.filter(item => item.category === filter);
       
-      container.innerHTML = filteredItems.map((item, idx) => `
-        <div class="gallery-tile" onclick="openStoryLightbox(${idx})">
+      filteredStoryItems = filter === 'all' 
+        ? storytellingGallery 
+        : storytellingGallery.filter(item => item.category === filter);
+      
+      container.innerHTML = filteredStoryItems.map((item, idx) => `
+        <div class="gallery-tile group" onclick="openLightbox('story', ${idx})">
           <img src="${item.url}" alt="${item.title}" loading="lazy">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-4">
-            <span class="text-white text-xs font-medium">${item.title}</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+            <span class="text-white text-sm font-bold tracking-wide">${item.title}</span>
           </div>
         </div>
       `).join('');
 
+      // Update Tab Styles
       document.querySelectorAll('.gallery-tab').forEach(btn => {
         btn.classList.remove('bg-brand-dark', 'text-white');
         btn.classList.add('bg-white', 'text-gray-700');
@@ -492,47 +492,240 @@
       renderGallery(cat);
     }
 
-    function openStoryLightbox(idx) {
-      activeLightboxImages = filteredItems;
-      lightboxIndex = idx;
-      updateLightboxImage();
-      document.getElementById('lightbox').classList.remove('hidden');
-      document.getElementById('lightbox').classList.add('flex');
+    // --- 3. HANDCRAFTED ALBUMS DATA (8 DISTINCT ARRAYS) ---
+    // Helper function to generate 10 unique placeholder image URLs for a specific package
+    function generateUniqueImages(seedPrefix) {
+      let imgs = [];
+      for(let i=1; i<=10; i++) {
+        imgs.push(`https://picsum.photos/seed/${seedPrefix}-${i}/800/600`);
+      }
+      return imgs;
     }
 
-    function openAlbumLightbox(panelIndex, imgIndex) {
-      activeLightboxImages = currentAlbumPanelImages[panelIndex];
-      lightboxIndex = imgIndex;
-      updateLightboxImage();
-      document.getElementById('lightbox').classList.remove('hidden');
-      document.getElementById('lightbox').classList.add('flex');
+    const albumData = {
+      premium: {
+        description: "Exquisite hardbound presentation. Heavyweight lay-flat panoramic pages offering seamless full-spread photos.",
+        panels: [
+          {
+            size: "A4 Size (Premium)", basePrice: "Rs. 9,500", extraPage: "100Rs",
+            specs: "20 Pages Base • Custom Hardcover • Lay-flat panoramic binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('prem-a4')
+          },
+          {
+            size: "A5 Size (Premium)", basePrice: "Rs. 6,500", extraPage: "50Rs",
+            specs: "20 Pages Base • Custom Hardcover • Lay-flat binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('prem-a5')
+          },
+          {
+            size: "8x8 Size (Premium)", basePrice: "Rs. 7,500", extraPage: "80Rs",
+            specs: "20 Pages Base • Square Hardcover • Panoramic lay-flat",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('prem-8x8')
+          },
+          {
+            size: "4x4 Mini (Premium)", basePrice: "Rs. 3,500", extraPage: "20Rs",
+            specs: "20 Pages Base • Compact Pocket Edition • Hardcover",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('prem-4x4')
+          }
+        ]
+      },
+      budget: {
+        description: "Affordable memories without compromise. Beautiful press-printed pages with reliable budget binding.",
+        panels: [
+          {
+            size: "A4 Size (Budget)", basePrice: "Rs. 5,000", extraPage: "100Rs",
+            specs: "20 Pages Base • Basic photo cover • Spiral bound budget binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('budg-a4')
+          },
+          {
+            size: "A5 Size (Budget)", basePrice: "Rs. 3,500", extraPage: "50Rs",
+            specs: "20 Pages Base • Basic photo cover • Spiral bound budget binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('budg-a5')
+          },
+          {
+            size: "8x8 Size (Budget)", basePrice: "Rs. 4,200", extraPage: "80Rs",
+            specs: "20 Pages Base • Basic photo cover • Spiral bound budget binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('budg-8x8')
+          },
+          {
+            size: "4x4 Mini (Budget)", basePrice: "Rs. 2,000", extraPage: "20Rs",
+            specs: "20 Pages Base • Basic photo cover • Spiral bound budget binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('budg-4x4')
+          }
+        ]
+      }
+    };
+
+    let activeAlbumCategory = 'premium';
+    
+    // Store arrays globally so the lightbox knows exactly which 10-image array to show
+    let currentActiveAlbumPanelsData = []; 
+
+    function switchAlbumCategory(category) {
+      activeAlbumCategory = category;
+      const btnP = document.getElementById('tab-premium');
+      const btnB = document.getElementById('tab-budget');
+
+      if(category === 'premium') {
+        btnP.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0";
+        btnB.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0 bg-transparent";
+      } else {
+        btnB.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0";
+        btnP.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0 bg-transparent";
+      }
+
+      renderAlbumPanels();
+    }
+
+    function renderAlbumPanels() {
+      const data = albumData[activeAlbumCategory];
+      const container = document.getElementById('album-container');
+      
+      // Store current panels in a global array mapped for lightbox access
+      currentActiveAlbumPanelsData = data.panels;
+
+      let html = `
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-8 text-center max-w-2xl mx-auto shadow-sm">
+          <p class="text-[11px] md:text-sm font-bold text-amber-900 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-truck-fast text-brand-gold text-lg"></i> Online Doorstep Delivery Available Nationwide!
+          </p>
+        </div>
+        <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto text-sm">${data.description}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      `;
+
+      data.panels.forEach((panel, panelIndex) => {
+        // Pre-fill WhatsApp Text
+        const waText = encodeURIComponent(`Hi Ranath, I want to order the ${panel.size} album package (${panel.basePrice}). Please send me the details.`);
+        const waLink = `https://wa.me/94774903062?text=${waText}`;
+
+        html += `
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow relative flex flex-col">
+            
+            <!-- WhatsApp Quick Order Button -->
+            <a href="${waLink}" target="_blank" class="absolute top-6 right-6 w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#20b858] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 z-10" title="Order via WhatsApp">
+              <i class="fa-brands fa-whatsapp text-2xl"></i>
+            </a>
+
+            <!-- Header Info -->
+            <div class="pr-14 mb-4">
+              <h4 class="font-serif text-2xl md:text-3xl font-bold text-gray-900 leading-tight">${panel.size}</h4>
+            </div>
+
+            <!-- Pricing -->
+            <div class="flex items-baseline gap-2 mb-5">
+              <span class="font-bold text-3xl text-brand-gold">${panel.basePrice}</span>
+              <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Base Price</span>
+            </div>
+
+            <!-- Details Block -->
+            <div class="bg-gray-50 rounded-xl p-4 mb-5 space-y-3 flex-grow border border-gray-100">
+              <p class="text-sm font-semibold text-gray-800"><i class="fa-solid fa-layer-group text-amber-500 w-5"></i> ${panel.specs}</p>
+              <p class="text-sm font-semibold text-gray-800"><i class="fa-solid fa-file-invoice text-amber-500 w-5"></i> Extra Page: ${panel.extraPage}</p>
+              <p class="text-sm font-semibold text-gray-800"><i class="fa-solid fa-wand-magic-sparkles text-amber-500 w-5"></i> ${panel.lamination}</p>
+            </div>
+
+            <!-- Image Previews (Exactly 3 thumbnails) -->
+            <div class="mt-auto">
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Sample Gallery</span>
+                <button onclick="openLightbox('album', ${panelIndex}, 0)" class="text-xs font-bold text-brand-gold hover:text-amber-700">View All 10 <i class="fa-solid fa-arrow-right"></i></button>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2">
+                ${panel.images.slice(0, 3).map((imgUrl, imgIndex) => `
+                  <div class="aspect-square rounded-lg overflow-hidden relative cursor-pointer group shadow-sm" onclick="openLightbox('album', ${panelIndex}, ${imgIndex})">
+                    <img src="${imgUrl}" alt="Sample" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    ${imgIndex === 2 ? `
+                      <div class="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[1px]">
+                        <span class="text-white font-bold text-sm">+7</span>
+                      </div>
+                    ` : `
+                      <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    `}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    // --- 4. GLOBAL LIGHTBOX ENGINE (Handles both Gallery & Albums) ---
+    let currentLightboxArray = [];
+    let currentLightboxIndex = 0;
+    const lightboxEl = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+
+    function openLightbox(context, param1, param2) {
+      if (context === 'story') {
+        // param1 is image index
+        // Extract plain URL/Title from the objects
+        currentLightboxArray = filteredStoryItems.map(item => ({ url: item.url, caption: item.title }));
+        currentLightboxIndex = param1;
+      } else if (context === 'album') {
+        // param1 is panelIndex, param2 is image index
+        const panel = currentActiveAlbumPanelsData[param1];
+        // Create object format to match
+        currentLightboxArray = panel.images.map((url, idx) => ({ 
+          url: url, 
+          caption: `${panel.size} - Sample ${idx + 1}` 
+        }));
+        currentLightboxIndex = param2;
+      }
+
+      updateLightboxView();
+      lightboxEl.classList.remove('hidden');
+      lightboxEl.classList.add('flex');
     }
 
     function closeLightbox() {
-      document.getElementById('lightbox').classList.add('hidden');
-      document.getElementById('lightbox').classList.remove('flex');
+      lightboxEl.classList.add('hidden');
+      lightboxEl.classList.remove('flex');
     }
 
-    function updateLightboxImage() {
-      const item = activeLightboxImages[lightboxIndex];
-      document.getElementById('lightbox-img').src = item.url || item;
-      document.getElementById('lightbox-caption').textContent = `${item.title || 'Album Sample'} (${lightboxIndex + 1} of ${activeLightboxImages.length})`;
+    function updateLightboxView() {
+      const item = currentLightboxArray[currentLightboxIndex];
+      // Quick fade effect
+      lightboxImg.style.opacity = 0;
+      setTimeout(() => {
+        lightboxImg.src = item.url;
+        lightboxImg.style.opacity = 1;
+      }, 150);
+      
+      lightboxCaption.textContent = item.caption;
+      lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxArray.length}`;
     }
 
-    function nextLightboxImage() {
-      lightboxIndex = (lightboxIndex + 1) % activeLightboxImages.length;
-      updateLightboxImage();
+    function nextLightboxImage(e) {
+      if(e) e.stopPropagation();
+      currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxArray.length;
+      updateLightboxView();
     }
 
-    function prevLightboxImage() {
-      lightboxIndex = (lightboxIndex - 1 + activeLightboxImages.length) % activeLightboxImages.length;
-      updateLightboxImage();
+    function prevLightboxImage(e) {
+      if(e) e.stopPropagation();
+      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxArray.length) % currentLightboxArray.length;
+      updateLightboxView();
     }
 
-    // Touch Swipe Support for Lightbox
+    // Touch Swipe Mechanics for Lightbox
     let touchStartX = 0;
     let touchEndX = 0;
-    const lightboxEl = document.getElementById('lightbox');
     
     lightboxEl.addEventListener('touchstart', e => {
       touchStartX = e.changedTouches[0].screenX;
@@ -540,210 +733,55 @@
 
     lightboxEl.addEventListener('touchend', e => {
       touchEndX = e.changedTouches[0].screenX;
-      if (touchEndX < touchStartX - 50) nextLightboxImage();
-      if (touchEndX > touchStartX + 50) prevLightboxImage();
+      handleSwipe();
     });
 
-    const samplePool = [
-      "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=600",
-      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600",
-      "https://images.unsplash.com/photo-1618329027138-518296245191?q=80&w=600",
-      "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=600",
-      "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=600",
-      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=600",
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600",
-      "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600",
-      "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=600",
-      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600"
-    ];
-
-    let currentAlbumPanelImages = [];
-
-    const albumData = {
-      premium: {
-        title: "Premium Hardcover Collection",
-        description: "Custom hardbound casing with ultra-thick lay-flat panoramic pages, protective presentation box, and professional gloss & matt lamination options.",
-        panels: [
-          {
-            size: "A4 Size",
-            price: "Rs. 9,500",
-            extraPage: "100Rs per extra page",
-            specs: "Includes 20 Pages • Custom Hardcover Casing • Lay-flat panoramic binding",
-            samples: samplePool
-          },
-          {
-            size: "A5 Size",
-            price: "Rs. 6,500",
-            extraPage: "50Rs per extra page",
-            specs: "Includes 20 Pages • Custom Hardcover Casing • Lay-flat binding",
-            samples: samplePool
-          },
-          {
-            size: "8x8 Size",
-            price: "Rs. 7,500",
-            extraPage: "80Rs per extra page",
-            specs: "Includes 20 Pages • Square Hardcover • Panoramic lay-flat",
-            samples: samplePool
-          },
-          {
-            size: "4x4 Mini Pocket",
-            price: "Rs. 3,500",
-            extraPage: "20Rs per extra page",
-            specs: "Includes 20 Pages • Compact Pocket Edition • Hardcover",
-            samples: samplePool
-          }
-        ]
-      },
-      budget: {
-        title: "Budget Collection",
-        description: "Affordable press-printed photo books with spiral bound binding method, soft protective covers, and gloss/matt lamination choices.",
-        panels: [
-          {
-            size: "A4 Size",
-            price: "Rs. 7,000",
-            extraPage: "100Rs per extra page",
-            specs: "Includes 20 Pages • Spiral Bound Binding • Soft Protective Cover",
-            samples: samplePool
-          },
-          {
-            size: "A5 Size",
-            price: "Rs. 4,800",
-            extraPage: "50Rs per extra page",
-            specs: "Includes 20 Pages • Spiral Bound Binding • Soft Protective Cover",
-            samples: samplePool
-          },
-          {
-            size: "8x8 Size",
-            price: "Rs. 5,500",
-            extraPage: "80Rs per extra page",
-            specs: "Includes 20 Pages • Square Format • Spiral Bound Binding",
-            samples: samplePool
-          },
-          {
-            size: "4x4 Mini Pocket",
-            price: "Rs. 2,500",
-            extraPage: "20Rs per extra page",
-            specs: "Includes 20 Pages • Mini Pocket Edition • Spiral Bound",
-            samples: samplePool
-          }
-        ]
-      }
-    };
-
-    let selectedAlbum = 'premium';
-
-    function switchAlbumType(type) {
-      selectedAlbum = type;
-      const btnP = document.getElementById('tab-premium');
-      const btnB = document.getElementById('tab-budget');
-
-      if(type === 'premium') {
-        btnP.className = "px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all bg-brand-dark text-white shadow-md";
-        btnB.className = "px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all text-gray-600 hover:text-black";
-      } else {
-        btnB.className = "px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all bg-brand-dark text-white shadow-md";
-        btnP.className = "px-6 py-3 rounded-xl font-semibold text-sm md:text-base transition-all text-gray-600 hover:text-black";
-      }
-
-      renderAlbumPanel();
+    function handleSwipe() {
+      const threshold = 50;
+      if (touchEndX < touchStartX - threshold) nextLightboxImage();
+      if (touchEndX > touchStartX + threshold) prevLightboxImage();
     }
+    
+    // Keyboard support for Lightbox
+    document.addEventListener('keydown', (e) => {
+      if (!lightboxEl.classList.contains('hidden')) {
+        if (e.key === 'ArrowRight') nextLightboxImage();
+        if (e.key === 'ArrowLeft') prevLightboxImage();
+        if (e.key === 'Escape') closeLightbox();
+      }
+    });
 
-    function renderAlbumPanel() {
-      const data = albumData[selectedAlbum];
-      const container = document.getElementById('album-panel-content');
-      currentAlbumPanelImages = data.panels.map(p => p.samples);
-
-      container.innerHTML = `
-        <div class="text-center mb-8">
-          <h3 class="font-serif text-2xl md:text-3xl text-brand-dark mb-2">${data.title}</h3>
-          <p class="text-gray-600 text-sm md:text-base max-w-xl mx-auto">${data.description}</p>
-        </div>
-
-        <!-- 4 Pricing Panels Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          ${data.panels.map((panel, pIdx) => `
-            <div class="bg-gray-50 border border-gray-200 rounded-3xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow relative">
-              
-              <!-- Small Right-Aligned WhatsApp Order Button -->
-              <a href="https://wa.me/94774903062?text=Hi%20Ranath,%20I%20would%20like%20to%20order%20the%20${encodeURIComponent(data.title)}%20-%20${encodeURIComponent(panel.size)}%20(${panel.price})." target="_blank" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#20b858] text-white flex items-center justify-center shadow-md transition-transform hover:scale-110" title="Order via WhatsApp">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-              </a>
-
-              <div>
-                <div class="mb-4 pr-12">
-                  <h4 class="font-serif text-2xl font-bold text-brand-dark">${panel.size}</h4>
-                  <span class="text-xs text-gray-500 font-medium">${panel.specs}</span>
-                </div>
-
-                <div class="flex items-baseline gap-2 mb-4">
-                  <span class="font-bold text-2xl text-brand-gold">${panel.price}</span>
-                  <span class="text-xs text-gray-400">Base Price</span>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-100 mb-4 flex items-center justify-between text-xs font-medium text-gray-700">
-                  <span><i class="fa-solid fa-file-lines text-brand-gold mr-1"></i> Extra Page Rate:</span>
-                  <span class="text-gray-900 font-semibold">${panel.extraPage}</span>
-                </div>
-
-                <div class="flex items-center gap-2 mb-4 text-xs font-medium text-gray-600">
-                  <span class="px-2.5 py-1 bg-white rounded-md border border-gray-200"><i class="fa-solid fa-check text-brand-gold mr-1"></i> Gloss Lamination</span>
-                  <span class="px-2.5 py-1 bg-white rounded-md border border-gray-200"><i class="fa-solid fa-check text-brand-gold mr-1"></i> Matt Lamination</span>
-                </div>
-
-                <!-- 3 Thumbnail Preview Images (Clicking opens lightbox with all 10 samples) -->
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Sample Gallery (10 Photos)</span>
-                  <span class="text-xs text-brand-gold font-medium cursor-pointer hover:underline" onclick="openAlbumLightbox(${pIdx}, 0)">View All <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-                </div>
-                <div class="grid grid-cols-3 gap-2 mb-4">
-                  ${panel.samples.slice(0, 3).map((img, i) => `
-                    <div class="aspect-square rounded-lg overflow-hidden shadow-xs cursor-pointer hover:opacity-90 transition-opacity relative" onclick="openAlbumLightbox(${pIdx}, ${i})">
-                      <img src="${img}" alt="Sample Thumbnail" class="w-full h-full object-cover">
-                      ${i === 2 ? `<div class="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-bold">+7</div>` : ''}
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-
-              <div class="pt-2 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
-                <span><i class="fa-solid fa-truck-fast text-brand-gold mr-1"></i> Doorstep Delivery Available</span>
-                <span class="font-semibold text-gray-700">20 Pages Included</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
+    // --- 5. VCARD GENERATION ---
     function downloadVCard() {
-      const vCardData = `BEGIN:VCARD
+      const vCardText = `BEGIN:VCARD
 VERSION:3.0
 FN:Ranath Subasinghe
 N:Subasinghe;Ranath;;;
-TITLE:Photographer & Album Artisan
+TITLE:Photographer
 ORG:Infinit Photography
 TEL;TYPE=CELL:0786945117
 TEL;TYPE=WHATSAPP:0774903062
 EMAIL:ranath.subasinghe@gmail.com
-NOTE:Moments Captured. Memories Crafted.
+NOTE:Capturing genuine emotion, designing timeless layouts.
+URL:https://facebook.com
 END:VCARD`;
 
-      const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+      const blob = new Blob([vCardText], { type: 'text/vcard;charset=utf-8' });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.setAttribute('download', 'Ranath_Subasinghe_Infinit_Photography.vcf');
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Ranath_Subasinghe_Infinit_Photography.vcf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     }
 
-    // Initialize application state on load
-    initPages();
-    updateNav();
+    // --- INIT ---
+    initBook();
     renderGallery('all');
-    renderAlbumPanel();
+    switchAlbumCategory('premium');
+
   </script>
 </body>
 </html>
