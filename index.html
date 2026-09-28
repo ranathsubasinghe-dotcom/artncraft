@@ -468,11 +468,11 @@
 
           <!-- Filter Tabs -->
           <div class="flex flex-wrap justify-center gap-2 mb-8" id="gallery-tabs">
-            <button onclick="filterGallery('all')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-brand-dark text-white shadow-md transition-all">All</button>
-            <button onclick="filterGallery('baby')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Baby</button>
-            <button onclick="filterGallery('engagement')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Engagement</button>
-            <button onclick="filterGallery('casual')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Casual</button>
-            <button onclick="filterGallery('graduation')" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Graduation</button>
+            <button onclick="filterGallery('all')" data-category="all" class="gallery-tab is-active px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-brand-dark text-white shadow-md transition-all">All</button>
+            <button onclick="filterGallery('baby')" data-category="baby" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Baby</button>
+            <button onclick="filterGallery('engagement')" data-category="engagement" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Engagement</button>
+            <button onclick="filterGallery('casual')" data-category="casual" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Casual</button>
+            <button onclick="filterGallery('graduation')" data-category="graduation" class="gallery-tab px-4 py-2 rounded-full text-xs md:text-sm font-semibold bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200 transition-all">Graduation</button>
           </div>
 
           <!-- Masonry Grid -->
@@ -604,6 +604,62 @@
     </button>
   </div>
 
+  <style>
+    /* Lightbox mobile swipe + directional transition */
+    #lightbox {
+      overscroll-behavior: contain;
+    }
+    #lightbox-img {
+      will-change: transform, opacity;
+      transform: translateX(0);
+      opacity: 1;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    #lightbox-img.lb-slide-in-right {
+      transform: translateX(70px);
+      opacity: 0;
+    }
+    #lightbox-img.lb-slide-in-left {
+      transform: translateX(-70px);
+      opacity: 0;
+    }
+    #lightbox-img.lb-slide-active {
+      transform: translateX(0);
+      opacity: 1;
+      transition: transform 280ms cubic-bezier(.22,.61,.36,1), opacity 220ms ease;
+    }
+    #lightbox-img.lb-slide-out-left,
+    #lightbox-img.lb-slide-out-right {
+      opacity: 0;
+      transition: transform 180ms ease, opacity 150ms ease;
+    }
+    #lightbox-img.lb-slide-out-left { transform: translateX(-70px); }
+    #lightbox-img.lb-slide-out-right { transform: translateX(70px); }
+
+    /* Keep gallery category state visually identical on desktop and mobile. */
+    #gallery-tabs .gallery-tab {
+      -webkit-appearance: none;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #gallery-tabs .gallery-tab.is-active {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      border-color: #0f172a !important;
+      box-shadow: 0 4px 12px rgba(15,23,42,.16) !important;
+    }
+    #gallery-tabs .gallery-tab:not(.is-active) {
+      background-color: #ffffff !important;
+      color: #374151 !important;
+      border-color: #e5e7eb !important;
+    }
+    #gallery-tabs .gallery-tab:focus-visible {
+      outline: 2px solid #d97706;
+      outline-offset: 2px;
+    }
+  </style>
+
   <!-- Global Lightbox Overlay (Hidden by Default) -->
   <div id="lightbox" class="fixed inset-0 bg-black/98 z-[9999] hidden flex-col items-center justify-center p-4 touch-none">
     <div class="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-20 bg-gradient-to-b from-black/80 to-transparent">
@@ -618,8 +674,8 @@
     <button onclick="nextLightboxImage(event)" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-amber-500 transition-colors z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-black/50 hover:bg-white/10 rounded-full backdrop-blur-sm">
       <i class="fa-solid fa-chevron-right text-xl md:text-3xl"></i>
     </button>
-    <div class="relative w-full max-w-6xl h-full flex items-center justify-center">
-      <img id="lightbox-img" src="" alt="View" class="max-w-full max-h-[85vh] object-contain rounded-md shadow-2xl transition-opacity duration-300">
+    <div id="lightbox-stage" class="lightbox-stage relative w-full max-w-6xl h-full flex items-center justify-center">
+      <img id="lightbox-img" src="" alt="View" draggable="false" class="max-w-full max-h-[85vh] object-contain rounded-md shadow-2xl">
     </div>
     <div id="lightbox-caption" class="absolute bottom-6 text-gray-300 text-xs md:text-sm font-semibold uppercase tracking-widest bg-black/60 px-6 py-2 rounded-full backdrop-blur-md">
       Sample Image
@@ -698,12 +754,8 @@
       `).join('');
 
       document.querySelectorAll('.gallery-tab').forEach(btn => {
-        btn.classList.remove('bg-brand-dark', 'text-white');
-        btn.classList.add('bg-white', 'text-gray-700');
-        if(btn.textContent.toLowerCase().includes(filter) || (filter === 'all' && btn.textContent === 'All')) {
-          btn.classList.remove('bg-white', 'text-gray-700');
-          btn.classList.add('bg-brand-dark', 'text-white');
-        }
+        btn.classList.toggle('is-active', btn.dataset.category === filter);
+        btn.setAttribute('aria-selected', btn.dataset.category === filter ? 'true' : 'false');
       });
     }
     function filterGallery(cat) { renderGallery(cat); }
@@ -861,7 +913,12 @@
     // --- 4. GLOBAL LIGHTBOX ENGINE ---
     let currentLightboxArray = [];
     let currentLightboxIndex = 0;
+    let lightboxAnimating = false;
+    let lightboxTouchStartX = 0;
+    let lightboxTouchStartY = 0;
+    let lightboxTouchMoved = false;
     const lightboxEl = document.getElementById('lightbox');
+    const lightboxStage = document.getElementById('lightbox-stage');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
     const lightboxCounter = document.getElementById('lightbox-counter');
@@ -878,57 +935,130 @@
         }));
         currentLightboxIndex = param2;
       }
-      updateLightboxView();
+
+      lightboxAnimating = false;
+      lightboxImg.classList.remove('lb-slide-in-right', 'lb-slide-in-left', 'lb-slide-out-left', 'lb-slide-out-right', 'lb-slide-active');
+      updateLightboxView(false);
       lightboxEl.classList.remove('hidden');
       lightboxEl.classList.add('flex');
+      document.body.style.overscrollBehavior = 'none';
     }
 
     function closeLightbox() {
+      if (lightboxAnimating) return;
       lightboxEl.classList.add('hidden');
       lightboxEl.classList.remove('flex');
+      document.body.style.overscrollBehavior = '';
+      lightboxImg.classList.remove('lb-slide-in-right', 'lb-slide-in-left', 'lb-slide-out-left', 'lb-slide-out-right', 'lb-slide-active');
+      lightboxImg.src = '';
     }
 
-    function updateLightboxView() {
+    function updateLightboxView(animate = false, direction = 'next') {
       const item = currentLightboxArray[currentLightboxIndex];
-      lightboxImg.style.opacity = 0;
-      setTimeout(() => {
+      if (!item) return;
+
+      if (!animate) {
         lightboxImg.src = item.url;
-        lightboxImg.style.opacity = 1;
-      }, 150);
-      lightboxCaption.textContent = item.caption;
-      lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxArray.length}`;
+        lightboxImg.alt = item.caption || 'View';
+        lightboxImg.classList.remove('lb-slide-in-right', 'lb-slide-in-left', 'lb-slide-out-left', 'lb-slide-out-right', 'lb-slide-active');
+        lightboxCaption.textContent = item.caption;
+        lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxArray.length}`;
+        return;
+      }
+
+      lightboxAnimating = true;
+      const outClass = direction === 'next' ? 'lb-slide-out-left' : 'lb-slide-out-right';
+      const inClass = direction === 'next' ? 'lb-slide-in-right' : 'lb-slide-in-left';
+
+      lightboxImg.classList.remove('lb-slide-active', 'lb-slide-in-right', 'lb-slide-in-left');
+      lightboxImg.classList.add(outClass);
+
+      setTimeout(() => {
+        const nextItem = currentLightboxArray[currentLightboxIndex];
+        lightboxImg.src = nextItem.url;
+        lightboxImg.alt = nextItem.caption || 'View';
+        lightboxCaption.textContent = nextItem.caption;
+        lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxArray.length}`;
+
+        lightboxImg.classList.remove(outClass);
+        lightboxImg.classList.add(inClass);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            lightboxImg.classList.remove(inClass);
+            lightboxImg.classList.add('lb-slide-active');
+          });
+        });
+
+        setTimeout(() => {
+          lightboxImg.classList.remove('lb-slide-active');
+          lightboxAnimating = false;
+        }, 300);
+      }, 180);
     }
 
     function nextLightboxImage(e) {
-      if(e) e.stopPropagation();
+      if (e) e.stopPropagation();
+      if (!currentLightboxArray.length || lightboxAnimating) return;
       currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxArray.length;
-      updateLightboxView();
-    }
-    function prevLightboxImage(e) {
-      if(e) e.stopPropagation();
-      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxArray.length) % currentLightboxArray.length;
-      updateLightboxView();
+      updateLightboxView(true, 'next');
     }
 
-    // Touch Swipe Mechanics for Lightbox
-    let touchStartX = 0;
-    let touchEndX = 0;
-    lightboxEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-    lightboxEl.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-    function handleSwipe() {
-      const threshold = 50;
-      if (touchEndX < touchStartX - threshold) nextLightboxImage();
-      if (touchEndX > touchStartX + threshold) prevLightboxImage();
+    function prevLightboxImage(e) {
+      if (e) e.stopPropagation();
+      if (!currentLightboxArray.length || lightboxAnimating) return;
+      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxArray.length) % currentLightboxArray.length;
+      updateLightboxView(true, 'prev');
     }
+
+    // Close when tapping/clicking anywhere outside the actual image/buttons.
+    lightboxEl.addEventListener('click', (e) => {
+      if (e.target === lightboxEl || e.target === lightboxStage || e.target === lightboxCaption) {
+        closeLightbox();
+      }
+    });
+
+    // Mobile swipe mechanics with horizontal slide animation.
+    lightboxEl.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      lightboxTouchStartX = e.touches[0].clientX;
+      lightboxTouchStartY = e.touches[0].clientY;
+      lightboxTouchMoved = false;
+    }, { passive: true });
+
+    lightboxEl.addEventListener('touchmove', (e) => {
+      if (e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - lightboxTouchStartX;
+      const dy = e.touches[0].clientY - lightboxTouchStartY;
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+        lightboxTouchMoved = true;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    lightboxEl.addEventListener('touchend', (e) => {
+      if (!e.changedTouches.length) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const dx = touchEndX - lightboxTouchStartX;
+      const dy = touchEndY - lightboxTouchStartY;
+      const threshold = 55;
+
+      if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy)) {
+        lightboxTouchMoved = true;
+        if (dx < 0) nextLightboxImage(e);
+        else prevLightboxImage(e);
+      }
+    }, { passive: true });
+
+    // Prevent the image itself from being interpreted as a backdrop click.
+    lightboxImg.addEventListener('click', (e) => e.stopPropagation());
 
     // Keyboard support for Lightbox
     document.addEventListener('keydown', (e) => {
       if (!lightboxEl.classList.contains('hidden')) {
-        if (e.key === 'ArrowRight') nextLightboxImage();
-        if (e.key === 'ArrowLeft') prevLightboxImage();
+        if (e.key === 'ArrowRight') nextLightboxImage(e);
+        if (e.key === 'ArrowLeft') prevLightboxImage(e);
         if (e.key === 'Escape') closeLightbox();
       }
     });
