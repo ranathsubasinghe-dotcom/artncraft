@@ -10,6 +10,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Google Analytics 4: replace the placeholder below with your real Measurement ID (for example G-ABC123DEF4). -->
+  <script>
+    const GA_MEASUREMENT_ID = 'G-X5E44VKE6L';
+    if (GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+      const gaScript = document.createElement('script');
+      gaScript.async = true;
+      gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+      document.head.appendChild(gaScript);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA_MEASUREMENT_ID);
+    }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -416,6 +431,88 @@
       .social-row { align-items: stretch; flex-direction: column; }
       .facebook-btn { justify-content: center; }
     }
+
+    /* Page 5 — Customer Feedback */
+    .feedback-page-shell {
+      position: relative;
+      width: min(1100px, calc(100% - 20px));
+      margin: 0 auto;
+    }
+    .feedback-intro-rule {
+      width: 70px;
+      height: 1px;
+      margin: 14px auto 18px;
+      background: linear-gradient(to right, transparent, #c18a2f, transparent);
+    }
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .feedback-card {
+      background: rgba(255,255,255,.93);
+      border: 1px solid rgba(24,25,31,.09);
+      box-shadow: 0 10px 26px rgba(26,25,21,.08);
+      padding: 10px 10px 13px;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .feedback-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(193,138,47,.34);
+      box-shadow: 0 16px 34px rgba(26,25,21,.13);
+    }
+    .feedback-shot {
+      width: 100%;
+      aspect-ratio: 9 / 15;
+      object-fit: cover;
+      display: block;
+      background: #eef1ee;
+      cursor: pointer;
+      border: 1px solid rgba(24,25,31,.06);
+    }
+    .feedback-meta {
+      padding: 13px 5px 3px;
+      text-align: center;
+    }
+    .feedback-meta .occasion {
+      color: #986b22;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .feedback-meta .customer {
+      color: #24251f;
+      font: 600 17px/1.2 'Playfair Display', serif;
+      margin: 0 0 5px;
+    }
+    .feedback-meta .caption {
+      color: #77736b;
+      font-size: 11px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .feedback-note {
+      max-width: 720px;
+      margin: 20px auto 0;
+      text-align: center;
+      color: #8b877f;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 900px) {
+      .feedback-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .feedback-page-shell { width: min(100%, calc(100% - 12px)); }
+      .feedback-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .feedback-card { padding: 7px 7px 10px; }
+      .feedback-meta { padding-top: 9px; }
+      .feedback-meta .customer { font-size: 14px; }
+      .feedback-meta .caption { font-size: 9px; }
+    }
   </style>
 </head>
 <body>
@@ -496,11 +593,14 @@
           <!-- Category Toggle Switch -->
           <div class="flex justify-center mb-8">
             <div class="bg-gray-100 p-1.5 rounded-2xl flex gap-1 shadow-inner max-w-full overflow-x-auto">
-              <button onclick="switchAlbumCategory('premium')" id="tab-premium" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0">
-                <i class="fa-solid fa-gem text-amber-400 mr-2"></i> Premium Hardcover
-              </button>
               <button onclick="switchAlbumCategory('budget')" id="tab-budget" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0">
                 <i class="fa-solid fa-book-open mr-2"></i> Budget Collection
+              </button>
+              <button onclick="switchAlbumCategory('midrange')" id="tab-midrange" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0">
+                <i class="fa-solid fa-star-half-stroke text-amber-500 mr-2"></i> Midrange Collection
+              </button>
+              <button onclick="switchAlbumCategory('premium')" id="tab-premium" class="px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0">
+                <i class="fa-solid fa-gem text-amber-400 mr-2"></i> Premium Hardcover
               </button>
             </div>
           </div>
@@ -512,14 +612,36 @@
       </div>
     </div>
 
-    <!-- PAGE 4: LET'S CREATE TOGETHER (vCard) — REDESIGNED -->
+    <!-- PAGE 4: CUSTOMER FEEDBACK -->
     <div class="page bg-brand-light" id="page-4">
+      <div class="album-page-frame">
+        <div class="album-page-content p-4 md:p-12 pb-32 min-h-full flex flex-col justify-center">
+          <div class="feedback-page-shell">
+            <header class="text-center pt-6 mb-7">
+              <span class="text-brand-gold uppercase tracking-widest text-xs font-bold mb-2 block">Words From Our Clients</span>
+              <h2 class="font-serif text-3xl md:text-5xl text-brand-dark mb-3">Customer Feedback</h2>
+              <div class="feedback-intro-rule"></div>
+              <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">A small collection of sample conversations showing how clients remember their experience with Infinit Photography.</p>
+            </header>
+
+            <div class="feedback-grid" id="feedback-grid">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <p class="feedback-note">Sample WhatsApp conversations shown for design preview — replace with your real customer feedback later.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: LET'S CREATE TOGETHER (vCard) — REDESIGNED -->
+    <div class="page bg-brand-light" id="page-5">
       <div class="album-page-frame">
         <div class="album-page-content p-5 md:p-12 pb-32 min-h-full flex flex-col items-center justify-center relative">
           <div class="contact-spread">
             <div class="profile-panel">
               <div class="portrait-frame">
-                <img src="https://lh3.googleusercontent.com/a/ACg8ocKef7CHFLJ3DvJO7jVtbnvwKcAIdY7IWzhUr4CI9xdgx-NTurU=s288-c-no" alt="Ranath Subasinghe">
+                <img src="https://images.unsplash.com/photo-1554046920-90dcac824ab8?w=400&q=80" alt="Ranath Subasinghe">
               </div>
               <h1 class="contact-name">Ranath Subasinghe</h1>
               <div class="contact-role">Photographer</div>
@@ -562,7 +684,7 @@
                   </div>
                   <span class="contact-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
-                <!-- Studio 
+                <!-- Studio -->
                 <div class="contact-item">
                   <div class="contact-icon"><i class="fa-solid fa-briefcase"></i></div>
                   <div>
@@ -570,13 +692,13 @@
                     <span class="contact-value">Infinit Photography</span>
                   </div>
                   <span class="contact-arrow"><i class="fa-solid fa-camera"></i></span>
-                </div> -->
+                </div>
               </div>
 
               <div class="action-bar">
                 <div class="social-row">
                   <div class="find-me">Find me on</div>
-                  <a href="https://www.facebook.com/ranath.subasinghe" target="_blank" class="facebook-btn">
+                  <a href="#" class="facebook-btn">
                     <i class="fa-brands fa-facebook"></i>
                     Facebook
                     <i class="fa-solid fa-arrow-right"></i>
@@ -592,7 +714,9 @@
         </div>
       </div>
     </div>
+
   </div>
+
 
   <!-- Floating Navigation Controls -->
   <div class="nav-controls">
@@ -799,6 +923,35 @@
           }
         ]
       },
+      midrange: {
+        description: "A balanced collection designed for everyday celebrations. Premium-looking finishes, dependable materials, and plenty of room for your favourite moments.",
+        panels: [
+          {
+            size: "A4 Size (Midrange)", basePrice: "Rs. 7,000", extraPage: "100Rs",
+            specs: "20 Pages Base • Quality photo cover • Durable lay-flat binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('mid-a4')
+          },
+          {
+            size: "A5 Size (Midrange)", basePrice: "Rs. 4,800", extraPage: "50Rs",
+            specs: "20 Pages Base • Quality photo cover • Durable binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('mid-a5')
+          },
+          {
+            size: "8x8 Size (Midrange)", basePrice: "Rs. 5,800", extraPage: "80Rs",
+            specs: "20 Pages Base • Square cover • Panoramic presentation",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('mid-8x8')
+          },
+          {
+            size: "4x4 Mini (Midrange)", basePrice: "Rs. 2,800", extraPage: "20Rs",
+            specs: "20 Pages Base • Compact keepsake • Stronger binding",
+            lamination: "Gloss / Matt finishes available",
+            images: generateUniqueImages('mid-4x4')
+          }
+        ]
+      },
       budget: {
         description: "Affordable memories without compromise. Beautiful press-printed pages with reliable budget binding.",
         panels: [
@@ -835,15 +988,16 @@
 
     function switchAlbumCategory(category) {
       activeAlbumCategory = category;
-      const btnP = document.getElementById('tab-premium');
-      const btnB = document.getElementById('tab-budget');
-      if(category === 'premium') {
-        btnP.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0";
-        btnB.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0 bg-transparent";
-      } else {
-        btnB.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all bg-brand-dark text-white shadow-md flex-shrink-0";
-        btnP.className = "px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all text-gray-500 hover:text-gray-900 flex-shrink-0 bg-transparent";
-      }
+      const buttons = {
+        premium: document.getElementById('tab-premium'),
+        midrange: document.getElementById('tab-midrange'),
+        budget: document.getElementById('tab-budget')
+      };
+      Object.entries(buttons).forEach(([key, btn]) => {
+        const active = key === category;
+        btn.className = `px-5 py-3 rounded-xl font-bold text-xs md:text-sm transition-all flex-shrink-0 ${active ? 'bg-brand-dark text-white shadow-md' : 'text-gray-500 hover:text-gray-900 bg-transparent'}`;
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
       renderAlbumPanels();
     }
 
@@ -910,7 +1064,92 @@
       container.innerHTML = html;
     }
 
-    // --- 4. GLOBAL LIGHTBOX ENGINE ---
+
+    // --- 4. CUSTOMER FEEDBACK DATA & RENDERING ---
+    function makeWhatsAppDemo(name, messages, accent = '#075E54') {
+      const safe = (value) => String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const messageRows = messages.map((m, i) => {
+        const side = m.from === 'client' ? 'right' : 'left';
+        const bubble = side === 'right' ? '#DCF8C6' : '#FFFFFF';
+        const align = side === 'right' ? 'end' : 'start';
+        const time = i % 2 === 0 ? '7:42 PM' : '7:45 PM';
+        return `<rect x="${side === 'right' ? 150 : 38}" y="${405 + i*105}" width="210" height="72" rx="16" fill="${bubble}"/><text x="${side === 'right' ? 168 : 56}" y="${432 + i*105}" font-family="Inter,Arial,sans-serif" font-size="18" fill="#26332d">${safe(m.text.slice(0, 27))}</text><text x="${side === 'right' ? 168 : 56}" y="${456 + i*105}" font-family="Inter,Arial,sans-serif" font-size="18" fill="#26332d">${safe(m.text.slice(27, 54))}</text><text x="${side === 'right' ? 320 : 208}" y="${466 + i*105}" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="12" fill="#809187">${time} ${side === 'right' ? '✓✓' : ''}</text>`;
+      }).join('');
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="450" height="750" viewBox="0 0 450 750">
+          <defs>
+            <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#e9f6ee"/><stop offset="1" stop-color="#dfeee5"/>
+            </linearGradient>
+          </defs>
+          <rect width="450" height="750" rx="28" fill="#fbfbfb"/>
+          <rect x="0" y="0" width="450" height="92" rx="28" fill="${accent}"/>
+          <rect x="0" y="64" width="450" height="28" fill="${accent}"/>
+          <circle cx="43" cy="46" r="23" fill="#e8c27f"/>
+          <text x="43" y="54" text-anchor="middle" font-family="Georgia,serif" font-size="21" font-weight="700" fill="#5e421d">${safe(name.charAt(0))}</text>
+          <text x="78" y="40" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" fill="white">${safe(name)}</text>
+          <text x="78" y="64" font-family="Inter,Arial,sans-serif" font-size="13" fill="#d8eee7">online • sample conversation</text>
+          <rect y="92" width="450" height="590" fill="url(#bg)"/>
+          <text x="225" y="126" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="700" fill="#7e8e85" letter-spacing="2">DEMO FEEDBACK</text>
+          ${messageRows}
+          <rect x="22" y="694" width="406" height="34" rx="17" fill="#f4f4f4"/>
+          <text x="38" y="716" font-family="Inter,Arial,sans-serif" font-size="12" fill="#a0a0a0">Message</text>
+          <circle cx="407" cy="711" r="12" fill="#75c96f"/>
+        </svg>`;
+      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    }
+
+    const customerFeedbacks = [
+      { customer: 'Nadeesha & Kasun', occasion: 'Engagement', caption: '“The album looked even better than we imagined.”', messages: [
+        { from: 'client', text: 'Hi Ranath! We received the album today.' },
+        { from: 'studio', text: 'So happy you love it! Thank you for trusting us.' },
+        { from: 'client', text: 'The photos and finishing are beautiful. Thank you!' }
+      ]},
+      { customer: 'Shalini', occasion: 'Baby Shoot', caption: '“Every tiny moment was captured so beautifully.”', messages: [
+        { from: 'client', text: 'We saw the preview. These baby photos are lovely!' },
+        { from: 'studio', text: 'Thank you! I am glad the little moments came through.' },
+        { from: 'client', text: 'Can we order the hardcover album too?' }
+      ]},
+      { customer: 'Tharindu', occasion: 'Graduation', caption: '“The final album feels like a memory book.”', messages: [
+        { from: 'client', text: 'The graduation album arrived safely.' },
+        { from: 'studio', text: 'Wonderful! Hope you enjoy every page.' },
+        { from: 'client', text: 'Definitely worth it. Thanks again!' }
+      ]},
+      { customer: 'Dilki & Family', occasion: 'Family Session', caption: '“Friendly service from the shoot to delivery.”', messages: [
+        { from: 'client', text: 'Thank you for today. The family photos are great.' },
+        { from: 'studio', text: 'You are most welcome. I loved the session too.' },
+        { from: 'client', text: 'We will recommend you to our friends!' }
+      ]},
+      { customer: 'Hasini', occasion: 'Birthday Session', caption: '“The layout design made the album feel personal.”', messages: [
+        { from: 'client', text: 'The birthday album is so nice! Love the layouts.' },
+        { from: 'studio', text: 'Thank you! I designed it around your favourite photos.' },
+        { from: 'client', text: 'I will order another one for the next event.' }
+      ]},
+      { customer: 'Ruwani', occasion: 'Casual Portraits', caption: '“Simple, elegant and exactly what I wanted.”', messages: [
+        { from: 'client', text: 'Got the edited photos. They look amazing!' },
+        { from: 'studio', text: 'Glad you are happy with them. Thank you!' },
+        { from: 'client', text: 'Already shared them with the family 😊' }
+      ]}
+    ];
+
+    function renderCustomerFeedbacks() {
+      const grid = document.getElementById('feedback-grid');
+      if (!grid) return;
+      grid.innerHTML = customerFeedbacks.map((item, idx) => {
+        const img = makeWhatsAppDemo(item.customer, item.messages);
+        return `
+          <article class="feedback-card">
+            <img src="${img}" alt="Sample WhatsApp feedback from ${item.customer}" class="feedback-shot" loading="lazy" onclick="openLightbox('feedback', ${idx})">
+            <div class="feedback-meta">
+              <div class="occasion">${item.occasion}</div>
+              <h3 class="customer">${item.customer}</h3>
+              <p class="caption">${item.caption}</p>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    // --- 5. GLOBAL LIGHTBOX ENGINE ---
     let currentLightboxArray = [];
     let currentLightboxIndex = 0;
     let lightboxAnimating = false;
@@ -934,6 +1173,12 @@
           caption: `${panel.size} - Sample ${idx + 1}`
         }));
         currentLightboxIndex = param2;
+      } else if (context === 'feedback') {
+        currentLightboxArray = customerFeedbacks.map(item => ({
+          url: makeWhatsAppDemo(item.customer, item.messages),
+          caption: `${item.customer} - ${item.occasion}`
+        }));
+        currentLightboxIndex = param1;
       }
 
       lightboxAnimating = false;
@@ -1063,7 +1308,7 @@
       }
     });
 
-    // --- 5. VCARD GENERATION ---
+    // --- 6. VCARD GENERATION ---
     function downloadVCard() {
       const vCardText = `BEGIN:VCARD
 VERSION:3.0
@@ -1088,10 +1333,26 @@ END:VCARD`;
       window.URL.revokeObjectURL(url);
     }
 
+
+    // --- 7. OPTIONAL ANALYTICS EVENTS ---
+    function trackEvent(name, params = {}) {
+      if (typeof gtag === 'function') gtag('event', name, params);
+    }
+
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('a[href*="wa.me"], a[href^="tel:"], a[href^="mailto:"], .facebook-btn');
+      if (!target) return;
+      if (target.href.includes('wa.me')) trackEvent('whatsapp_click');
+      else if (target.href.startsWith('tel:')) trackEvent('phone_click');
+      else if (target.href.startsWith('mailto:')) trackEvent('email_click');
+      else if (target.classList.contains('facebook-btn')) trackEvent('facebook_click');
+    });
+
     // --- INIT ---
     initBook();
     renderGallery('all');
     switchAlbumCategory('premium');
+    renderCustomerFeedbacks();
   </script>
 </body>
 </html>
